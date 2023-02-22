@@ -1,4 +1,5 @@
 # Application-manager 
+This component is charged to handle the starting and closure processes for specified docker containers. It is a container that connects to its own host machine in order to handle commands coming from the DHT.
 ## 1. Running Manager
 ### Application Managare Side
 - [x] ``` docker build -t application_manager . ```
