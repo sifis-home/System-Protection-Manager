@@ -8,8 +8,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       -
         name: Set up QEMU
