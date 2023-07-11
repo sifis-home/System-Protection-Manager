@@ -1,10 +1,11 @@
-FROM python:3.8
+FROM python:3.8-slim-buster
 
-WORKDIR .
+RUN pip install websocket-client
+RUN pip install requests
+RUN pip install rel
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY system_protection_manager.py /app/
 
-COPY . .
+WORKDIR /app
 
-CMD ["python3", "catch_topic.py"]
+CMD ["python", "system_protection_manager.py"]
