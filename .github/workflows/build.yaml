@@ -1,4 +1,4 @@
-name: system_protection_manager
+name: system-protection-manager
 
 on:
   push:
@@ -28,6 +28,6 @@ jobs:
         with:
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/sifis-home/system_protection_manager:latest
+          tags: ghcr.io/sifis-home/system-protection-manager:latest
           build-args: |
             COMMIT_ID=${{ github.sha }}
