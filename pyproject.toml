@@ -1,4 +1,3 @@
-cat pyproject.toml
 [tool.poetry]
 name = "system-protection-manager"
 version = "0.0"
