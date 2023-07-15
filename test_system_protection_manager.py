@@ -1,7 +1,6 @@
 import json
 from unittest import mock
 
-
 # Importare le funzioni dallo script
 from system_protection_manager import (
     connect_to_node_manager,
