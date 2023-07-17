@@ -210,33 +210,32 @@ def test_temperature_monitor():
     assert data == expected_data
 
 
-# Test for the temperature_monitor_request function
-# Test per la funzione dht_monitor
-def test_dht_monitor():
+# Test per la funzione on_message
+def test_on_message():
     # Definire gli input di esempio per la funzione
-    dictionary = {"key1": "value1", "key2": "value2"}
-    requestor_id = "requestor_id_example"
-    request_id = "request_id_example"
+    ws = mock.Mock()
+    message = '{"Persistent": {"topic_name": "SIFIS:Privacy_Aware_Speech_Recognition_Results", "value": {"Dictionary": {"key": "value"}, "requestor_id": "requestor_id_example", "request_id": "request_id_example"}}}'
 
     # Chiamare la funzione e verificare l'output o il comportamento atteso
-    data = system_protection_manager.dht_monitor(
-        dictionary, requestor_id, request_id
+    with mock.patch("builtins.print") as mock_print:
+        with mock.patch(
+            "system_protection_manager.dht_monitor"
+        ) as mock_dht_monitor:
+            with mock.patch(
+                "system_protection_manager.publish_dht_data"
+            ) as mock_publish_dht_data:
+                system_protection_manager.on_message(ws, message)
+
+    # Verificare che la funzione print sia stata chiamata con il messaggio corretto
+    mock_print.assert_any_call("Received:\n")
+    mock_print.assert_any_call(json.loads(message))
+
+    # Verificare che la funzione dht_monitor sia stata chiamata con i parametri corretti
+    mock_dht_monitor.assert_called_once_with(
+        {"key": "value"}, "requestor_id_example", "request_id_example"
     )
 
-    # Verificare che l'output sia corretto
-    expected_data = {
-        "RequestPostTopicUUID": {
-            "topic_name": "SIFIS:Privacy_Aware_Device_DHT_inquiry",
-            "topic_uuid": "DHT_inquiry",
-            "value": {
-                "description": "DHT inquiry",
-                "requestor_id": requestor_id,
-                "request_id": request_id,
-                "requestor_type": "Pippo",
-                "connected": True,
-                "Data Type": "String",
-                "Dictionary": str(dictionary),
-            },
-        },
-    }
-    assert data == expected_data
+    # Verificare che la funzione publish_dht_data sia stata chiamata con i parametri corretti
+    mock_publish_dht_data.assert_called_once_with(
+        mock_dht_monitor.return_value
+    )
