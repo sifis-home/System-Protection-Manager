@@ -12,4 +12,4 @@
 <!-- Badges -->
 [actions badge]: https://github.com/sifis-home/System-Protection-Manager/workflows/system-protection-manager/badge.svg
 [codecov badge]: https://codecov.io/gh/sifis-home/System-Protection-Manager/branch/master/graph/badge.svg
-[license badge]: https://img.shields.io/badge/license-MIT-blue.svG
+[license badge]: https://img.shields.io/badge/license-MIT-blue.svg
