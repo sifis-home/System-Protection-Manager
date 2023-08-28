@@ -4,6 +4,8 @@ import rel
 import requests
 import websocket
 
+rest_url = "http://localhost:3000/"
+
 table = {
     "146.48.62.97": "72b880d0fdc9a9a00dde4180727e908feb60e07bd614db710f606ca02f209153",
     "146.48.62.98": "f198e31671aa7c23318359ad3df4d13bf4e13e7f8243794877598cbb2c953421",
@@ -12,6 +14,16 @@ table = {
     "146.48.62.198": "fe7b6135e1549190588fbb083edd1e4e6ef0d1c738f57a9af5fa28a5a1296946",
     "146.48.62.109": "69cdbfa97b3e1a859ff7042370acd200fe89499028dfa90370dc23f4fb0552960",
 }
+
+
+def notify_mobile_application(topic_uuid, notification, notification_data):
+    topic_name = "SIFIS:notification_message"
+    requests.post(
+        rest_url + "topic_name/" + topic_name + "/topic_uuid/" + topic_uuid,
+        json=notification_data,
+    )
+    print("[!] The following message has been forwarded: " + notification)
+    return
 
 
 def on_message(ws, message):
@@ -26,10 +38,10 @@ def on_message(ws, message):
         try:
             topic_name = json_message["topic_name"]
             # handle topic name
-
+            topic_uuid = json_message["topic_uuid"]
             if topic_name == "SIFIS:node-manager-id-ip-mapping":
                 uuid = json_message["topic_uuid"]
-                print(uuid)
+                # print(uuid)
                 if "value" in json_message:
                     value = json_message["value"]
                     ip_list = value["ip_list"]
@@ -49,6 +61,16 @@ def on_message(ws, message):
                                 "is already present in the table with the corresponding UUID:",
                                 uuid,
                             )
+                else:
+                    notification = "Node ID - IP Mapping is failed"
+                    notification_data = {
+                        "requestor_id": requestor_id,
+                        "request_id": request_id,
+                        "message": notification,
+                    }
+                    notify_mobile_application(
+                        uuid, notification, notification_data
+                    )
 
             if topic_name == "SIFIS:Privacy_Aware_Speech_Recognition_Results":
                 if "value" in json_message:
@@ -63,8 +85,8 @@ def on_message(ws, message):
                     publish_dht_data(dht_data)
 
             if topic_name == "SIFIS:Privacy_Aware_Device_DHT_monitor":
-                node_data = connect_to_node_manager()
-                publish_dht_data(node_data)
+                # node_data = connect_to_node_manager()
+                # publish_dht_data(node_data)
                 if "value" in json_message:
                     json_message = json_message["value"]
                     dictionary = json_message["Dictionary"]
@@ -75,10 +97,6 @@ def on_message(ws, message):
                     )
                     print("PUBLISHING DHT INQUIRY ...")
                     publish_dht_data(dht_data)
-                    """
-                    url = "http://146.48.62.99:7000/manager"
-                    response = requests.post(url, json=json.dumps(dht_data))
-                    """
 
             if topic_name == "SIFIS:AUD_Manager_Results":
                 print(" JSON message \n")
@@ -86,6 +104,8 @@ def on_message(ws, message):
                     json_message = json_message["value"]
                     print(json_message)
                     description = json_message["description"]
+                    requestor_id = json_message["requestor_id"]
+                    request_id = json_message["request_id"]
                     print(description)
                     ip = json_message["subject_ip"]
                     ID = table[ip]
@@ -105,8 +125,21 @@ def on_message(ws, message):
                         "ID": ID,
                         "category": category,
                     }
-                    url = "http://146.48.62.99:7000/manager"
-                    response = requests.post(url, json=json.dumps(data))
+                    notification = (
+                        "Anomaly "
+                        + anomaly
+                        + " has been caught by AUD Analytic. The Node "
+                        + str(ID)
+                        + " has been kicked out"
+                    )
+                    notification_data = {
+                        "requestor_id": requestor_id,
+                        "request_id": request_id,
+                        "notification": notification,
+                    }
+                    notify_mobile_application(
+                        topic_uuid, notification, notification_data
+                    )
 
             if (
                 topic_name
@@ -133,8 +166,12 @@ def on_message(ws, message):
                     "Requestor": requestor,
                     "Request": request,
                 }
-                url = "http://146.48.62.99:7000/manager"
-                response = requests.post(url, json=response_data)
+                print(response_data)
+                if response_dht == "System Violation":
+                    notification = "System Violation on the DHT"
+                    notify_mobile_application(
+                        topic_uuid, response_data, notification
+                    )
 
             if (
                 topic_name
@@ -154,8 +191,10 @@ def on_message(ws, message):
                         "Request": request,
                     }
                     print("ANOMALY_DATA: " + str(anomaly_data))
-                    url = "http://146.48.62.99:7000/manager"
+                    """
+                    url = "http://localhost:7000/manager"
                     response = requests.post(url, json=anomaly_data)
+                    """
         except Exception as e:
             print("[!!!] ERROR: " + str(e))
 
@@ -174,7 +213,7 @@ def connect_to_node_manager(node_id):
 
 def publish_dht_data(dht_data):
     ws = websocket.WebSocketApp(
-        "ws://146.48.62.99:3000/ws",
+        "ws://localhost:3000/ws",
         on_open=on_open,
         on_message=on_message,
         on_error=on_error,
@@ -187,7 +226,7 @@ def publish_dht_data(dht_data):
 
 def publish_temperature(data):
     ws = websocket.WebSocketApp(
-        "ws://146.48.62.99:3000/ws",
+        "ws://localhost:3000/ws",
         on_open=on_open,
         on_error=on_error,
         on_close=on_close,
@@ -252,7 +291,7 @@ def on_open(ws):
 
 if __name__ == "__main__":
     ws = websocket.WebSocketApp(
-        "ws://146.48.62.99:3000/ws",
+        "ws://localhost:3000/ws",
         on_open=on_open,
         on_message=on_message,
         on_error=on_error,
