@@ -168,7 +168,10 @@ def on_message(ws, message):
                 }
                 print(response_data)
                 if response_dht == "System Violation":
-                    notification = "System Violation on the DHT"
+                    notification = {
+                        "message": "System Violation on the DHT"
+                    }
+
                     notify_mobile_application(
                         topic_uuid, response_data, notification
                     )
