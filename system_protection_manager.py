@@ -160,7 +160,7 @@ def on_message(ws, message):
                 print("[!!!] Results have arrived ...\n")
                 requestor = json_message["value"]["requestor_id"]
                 request = json_message["value"]["request_id"]
-                response_dht = json_message["value"]["Response"]
+                response_dht = json_message["value"]["response"]
                 response_data = {
                     "Response": response_dht,
                     "Requestor": requestor,
