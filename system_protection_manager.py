@@ -136,7 +136,7 @@ def on_message(ws, message):
                     }
                     notification = (
                         "Anomaly "
-                        + anomaly
+                        + category
                         + " has been caught by AUD Analytic. The Node "
                         + str(ip)
                         + " has been kicked out"
@@ -144,7 +144,7 @@ def on_message(ws, message):
                     notification_data = {
                         "anomaly": anomaly,
                         "category": category,
-                        "notification": notification,
+                        "message": notification,
                     }
                     notify_mobile_application(
                         topic_uuid, notification, notification_data
