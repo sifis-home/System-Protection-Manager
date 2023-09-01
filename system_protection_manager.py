@@ -102,25 +102,30 @@ def on_message(ws, message):
                 print(" JSON message \n")
                 if "value" in json_message:
                     json_message = json_message["value"]
-                    #print(json_message)
-                    description = json_message["description"]
-                    requestor_id = json_message["requestor_id"]
-                    request_id = json_message["request_id"]
-                    #print(description)
+                    # print(json_message)
+                    # description = json_message["description"]
+                    # requestor_id = json_message["requestor_id"]
+                    # request_id = json_message["request_id"]
+                    # print(description)
                     ip = json_message["subject_ip"]
                     ID = table[ip]
                     anomaly = json_message["anomaly"]
-                    #print(anomaly)
-                    #print("CATEGORY: ")
+                    # print(anomaly)
+                    # print("CATEGORY: ")
                     category = (
                         json_message["anomaly"]
                         .split("'category': ", 1)[1]
                         .split(", 'severity': ")[0]
                     )
-                    print("[!] AUD Analytics Results have been arrived. System Protection Manager has received : " + anomaly + " --> " + category)
-                    #print(category)
-                    #node_data = connect_to_node_manager(ID) handling node manager settings
-                    #publish_dht_data(node_data)  publishing node manager settings
+                    print(
+                        "[!] AUD Analytics Results have been arrived. System Protection Manager has received : "
+                        + anomaly
+                        + " --> "
+                        + category
+                    )
+                    # print(category)
+                    # node_data = connect_to_node_manager(ID) handling node manager settings
+                    # publish_dht_data(node_data)  publishing node manager settings
                     data = {
                         "description": description,
                         "ID": ID,
@@ -169,9 +174,7 @@ def on_message(ws, message):
                 }
                 print(response_data)
                 if response_dht == "System Violation":
-                    notification = {
-                        "message": "System Violation on the DHT"
-                    }
+                    notification = {"message": "System Violation on the DHT"}
 
                     notify_mobile_application(
                         topic_uuid, response_data, notification
