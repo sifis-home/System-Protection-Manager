@@ -103,20 +103,23 @@ def on_message(ws, message):
                 if "value" in json_message:
                     json_message = json_message["value"]
                     # print(json_message)
-                    # description = json_message["description"]
+                    description = json_message["description"]
                     # requestor_id = json_message["requestor_id"]
                     # request_id = json_message["request_id"]
                     # print(description)
                     ip = json_message["subject_ip"]
-                    ID = table[ip]
+                    # ID = table[ip]
                     anomaly = json_message["anomaly"]
                     # print(anomaly)
                     # print("CATEGORY: ")
-                    category = (
-                        json_message["anomaly"]
-                        .split("'category': ", 1)[1]
-                        .split(", 'severity': ")[0]
-                    )
+                    try:
+                        category = anomaly["category"]
+                    except:
+                        category = (
+                            json_message["anomaly"]
+                            .split("'category': ", 1)[1]
+                            .split(", 'severity': ")[0]
+                        )
                     print(
                         "[!] AUD Analytics Results have been arrived. System Protection Manager has received : "
                         + anomaly
@@ -128,19 +131,19 @@ def on_message(ws, message):
                     # publish_dht_data(node_data)  publishing node manager settings
                     data = {
                         "description": description,
-                        "ID": ID,
+                        "ID": ip,
                         "category": category,
                     }
                     notification = (
                         "Anomaly "
                         + anomaly
                         + " has been caught by AUD Analytic. The Node "
-                        + str(ID)
+                        + str(ip)
                         + " has been kicked out"
                     )
                     notification_data = {
-                        "requestor_id": requestor_id,
-                        "request_id": request_id,
+                        "anomaly": anomaly,
+                        "category": category,
                         "notification": notification,
                     }
                     notify_mobile_application(
