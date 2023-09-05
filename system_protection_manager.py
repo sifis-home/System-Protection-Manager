@@ -5,6 +5,7 @@ import requests
 import websocket
 
 rest_url = "http://localhost:3000/"
+last_ip = None
 
 table = {
     "146.48.62.97": "72b880d0fdc9a9a00dde4180727e908feb60e07bd614db710f606ca02f209153",
@@ -27,8 +28,9 @@ def notify_mobile_application(topic_uuid, notification, notification_data):
 
 
 def on_message(ws, message):
+    global last_ip
     json_message = json.loads(message)
-    print(json_message)
+    #print(json_message)
 
     if "Persistent" in json_message:
         json_message = json_message["Persistent"]
@@ -106,45 +108,48 @@ def on_message(ws, message):
                     # request_id = json_message["request_id"]
                     # print(description)
                     ip = json_message["subject_ip"]
-                    # ID = table[ip]
-                    anomaly = json_message["anomaly"]
-                    # print(anomaly)
-                    # print("CATEGORY: ")
-                    try:
-                        category = anomaly["category"]
-                    except:
-                        category = (
-                            json_message["anomaly"]
-                            .split("'category': ", 1)[1]
-                            .split(", 'severity': ")[0]
+
+                    if last_ip != ip or last_ip == None:
+                        last_ip == ip
+                        # ID = table[ip]
+                        anomaly = json_message["anomaly"]
+                        # print(anomaly)
+                        # print("CATEGORY: ")
+                        try:
+                            category = anomaly["category"]
+                        except:
+                            category = (
+                                json_message["anomaly"]
+                                .split("'category': ", 1)[1]
+                                .split(", 'severity': ")[0]
+                            )
+                        print(
+                            "[!] AUD Analytics Results have been arrived. System Protection Manager has received : "
+                            + anomaly
+                            + " --> "
+                            + category
                         )
-                    print(
-                        "[!] AUD Analytics Results have been arrived. System Protection Manager has received : "
-                        + anomaly
-                        + " --> "
-                        + category
-                    )
-                    # print(category)
-                    # node_data = connect_to_node_manager(ID) handling node manager settings
-                    # publish_dht_data(node_data)  publishing node manager settings
-                    data = {
-                        "description": description,
-                        "ID": ip,
-                        "category": category,
-                    }
-                    notification = (
-                        "Anomaly "
-                        + category
-                        + " has been caught by AUD Analytic."
-                    )
-                    notification_data = {
-                        "anomaly": anomaly,
-                        "category": category,
-                        "message": notification,
-                    }
-                    notify_mobile_application(
-                        topic_uuid, notification, notification_data
-                    )
+                        # print(category)
+                        # node_data = connect_to_node_manager(ID) handling node manager settings
+                        # publish_dht_data(node_data)  publishing node manager settings
+                        data = {
+                            "description": description,
+                            "ID": ip,
+                            "category": category,
+                        }
+                        notification = (
+                            "Anomaly "
+                            + category
+                            + " has been caught by AUD Analytic."
+                        )
+                        notification_data = {
+                            "anomaly": anomaly,
+                            "category": category,
+                            "message": notification,
+                        }
+                        notify_mobile_application(
+                            topic_uuid, notification, notification_data
+                        )
 
             if (
                 topic_name
