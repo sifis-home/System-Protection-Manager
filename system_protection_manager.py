@@ -30,7 +30,7 @@ def notify_mobile_application(topic_uuid, notification, notification_data):
 def on_message(ws, message):
     global last_ip
     json_message = json.loads(message)
-    #print(json_message)
+    # print(json_message)
 
     if "Persistent" in json_message:
         json_message = json_message["Persistent"]
@@ -99,6 +99,9 @@ def on_message(ws, message):
                     publish_dht_data(dht_data)
 
             if topic_name == "SIFIS:AUD_Manager_Results":
+                print(
+                    "---------------------------- ANOMALY DETECTED -----------------------------------------\n"
+                )
                 print("Received AUD Results message \n")
                 if "value" in json_message:
                     json_message = json_message["value"]
@@ -140,7 +143,7 @@ def on_message(ws, message):
                         notification = (
                             "Anomaly "
                             + category
-                            + " has been caught by AUD Analytic."
+                            + " has been detected by AUD Analytic."
                         )
                         notification_data = {
                             "anomaly": anomaly,
