@@ -27,10 +27,8 @@ def notify_mobile_application(topic_uuid, notification, notification_data):
 
 
 def on_message(ws, message):
-    # print("Received:\n")
-
     json_message = json.loads(message)
-    # print(json_message)
+    print(json_message)
 
     if "Persistent" in json_message:
         json_message = json_message["Persistent"]
@@ -99,12 +97,19 @@ def on_message(ws, message):
                     publish_dht_data(dht_data)
 
             if topic_name == "SIFIS:AUD_Manager_Results":
-                print(" Received AUD Results message \n")
+                print("Received AUD Results message \n")
                 if "value" in json_message:
                     json_message = json_message["value"]
+                    # print(json_message)
                     description = json_message["description"]
+                    # requestor_id = json_message["requestor_id"]
+                    # request_id = json_message["request_id"]
+                    # print(description)
                     ip = json_message["subject_ip"]
+                    # ID = table[ip]
                     anomaly = json_message["anomaly"]
+                    # print(anomaly)
+                    # print("CATEGORY: ")
                     try:
                         category = anomaly["category"]
                     except:
@@ -119,6 +124,7 @@ def on_message(ws, message):
                         + " --> "
                         + category
                     )
+                    # print(category)
                     # node_data = connect_to_node_manager(ID) handling node manager settings
                     # publish_dht_data(node_data)  publishing node manager settings
                     data = {
@@ -129,7 +135,7 @@ def on_message(ws, message):
                     notification = (
                         "Anomaly "
                         + category
-                        + " has been detected by AUD Analytic."
+                        + " has been caught by AUD Analytic."
                     )
                     notification_data = {
                         "anomaly": anomaly,
