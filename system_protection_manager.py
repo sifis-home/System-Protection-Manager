@@ -30,7 +30,7 @@ def notify_mobile_application(topic_uuid, notification, notification_data):
 def on_message(ws, message):
     global last_ip
     json_message = json.loads(message)
-    # print(json_message)
+    print(json_message)
 
     if "Persistent" in json_message:
         json_message = json_message["Persistent"]
