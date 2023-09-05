@@ -113,6 +113,7 @@ def on_message(ws, message):
                     ip = json_message["subject_ip"]
 
                     if last_ip != ip or last_ip == None:
+                        print(json_message)
                         last_ip == ip
                         # ID = table[ip]
                         anomaly = json_message["anomaly"]
