@@ -137,9 +137,7 @@ def on_message(ws, message):
                     notification = (
                         "Anomaly "
                         + category
-                        + " has been caught by AUD Analytic. The Node "
-                        + str(ip)
-                        + " has been kicked out"
+                        + " has been caught by AUD Analytic."
                     )
                     notification_data = {
                         "anomaly": anomaly,
