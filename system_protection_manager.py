@@ -10,7 +10,7 @@ last_ip = None
 table = {
     "146.48.99.25": "72b880d0fdc9a9a00dde4180727e908feb60e07bd614db710f606ca02f209153",
     "146.48.62.98": "f198e31671aa7c23318359ad3df4d13bf4e13e7f8243794877598cbb2c953421",
-    "146.48.62.99": "c3dc86dfbe0e01b0c3ccdbe71100f186d1e533d5be97260b6adffa3c6ad34f98",
+    "146.48.99.65": "c3dc86dfbe0e01b0c3ccdbe71100f186d1e533d5be97260b6adffa3c6ad34f98",
     "146.48.62.107": "482b1af0889dd80ba89b2e89692c73529dbf26a00360c02e01de36778e0c3ee2",
     "146.48.62.198": "fe7b6135e1549190588fbb083edd1e4e6ef0d1c738f57a9af5fa28a5a1296946",
     "146.48.62.109": "69cdbfa97b3e1a859ff7042370acd200fe89499028dfa90370dc23f4fb0552960",
@@ -116,7 +116,7 @@ def on_message(ws, message):
                         print(json_message)
                         last_ip == ip
                         ID = table[ip]
-                        print("[!] The ID of the Node is : " + str(ID))
+                        print("[ ! ! ! !] The TARGET NODE ID IS : " + str(ID))
                         anomaly = json_message["anomaly"]
                         # print(anomaly)
                         # print("CATEGORY: ")
