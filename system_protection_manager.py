@@ -39,6 +39,7 @@ def on_message(ws, message):
             topic_name = json_message["topic_name"]
             # handle topic name
             topic_uuid = json_message["topic_uuid"]
+            """
             if topic_name == "SIFIS:node-manager-id-ip-mapping":
                 uuid = json_message["topic_uuid"]
                 # print(uuid)
@@ -71,7 +72,7 @@ def on_message(ws, message):
                     notify_mobile_application(
                         uuid, notification, notification_data
                     )
-
+            """
             if topic_name == "SIFIS:Privacy_Aware_Speech_Recognition_Results":
                 if "value" in json_message:
                     json_message = json_message["value"]
