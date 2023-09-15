@@ -14,10 +14,15 @@ table = {
 
 notification_url_wisam = "http://146.48.99.25:3000/"
 
+
 def notify_mobile_application(topic_uuid, notification, notification_data):
     topic_name = "SIFIS:notification_message"
     requests.post(
-        notification_url_wisam + "topic_name/" + topic_name + "/topic_uuid/" + topic_uuid,
+        notification_url_wisam
+        + "topic_name/"
+        + topic_name
+        + "/topic_uuid/"
+        + topic_uuid,
         json=notification_data,
     )
     print("[!] The following message has been forwarded: " + notification)
@@ -79,14 +84,18 @@ def on_message(ws, message):
                     json_message = json_message["value"]
                     predictions = json_message["predictions"]
                     for pred in predictions:
-                        if pred["label"] == "Slam":
-                            message = (
-                                "[!] Noise detected, a door has been slammed]"
-                            )
-                            slam_data = {"message": message}
-                            notify_mobile_application(
-                                topic_uuid, notification, slam_data
-                            )
+                        try:
+                            if (
+                                pred["label"] == "Slam"
+                                or pred["label"] == "Hammer"
+                            ):
+                                message = "[!] Strong Noise detected !!!"
+                                slam_data = {"message": message}
+                                notify_mobile_application(
+                                    topic_uuid, notification, slam_data
+                                )
+                        except Exception as e:
+                            print(e)
 
             if topic_name == "SIFIS:Privacy_Aware_Speech_Recognition_Results":
                 if "value" in json_message:
