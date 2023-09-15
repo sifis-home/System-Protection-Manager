@@ -69,6 +69,24 @@ def on_message(ws, message):
                         uuid, notification, notification_data
                     )
             """
+
+            if (
+                topic_name
+                == "SIFIS:Privacy_Aware_Audio_Anomaly_Detection_Results"
+            ):
+                if "value" in json_message:
+                    json_message = json_message["value"]
+                    predictions = json_message["predictions"]
+                    for pred in predictions:
+                        if pred["label"] == "Slam":
+                            message = (
+                                "[!] Noise detected, a door has been slammed]"
+                            )
+                            slam_data = {"message": message}
+                            notify_mobile_application(
+                                topic_uuid, notification, slam_data
+                            )
+
             if topic_name == "SIFIS:Privacy_Aware_Speech_Recognition_Results":
                 if "value" in json_message:
                     json_message = json_message["value"]
