@@ -92,7 +92,7 @@ def on_message(ws, message):
                                 message = "[!] Strong Noise detected !!!"
                                 slam_data = {"message": message}
                                 notify_mobile_application(
-                                    topic_uuid, notification, slam_data
+                                    topic_uuid, message, slam_data
                                 )
                         except Exception as e:
                             print(e)
