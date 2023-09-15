@@ -89,7 +89,7 @@ def on_message(ws, message):
                                 pred["label"] == "Slam"
                                 or pred["label"] == "Hammer"
                             ):
-                                message = "[!] Strong Noise detected !!!"
+                                message = "Strong Noise detected !!!"
                                 slam_data = {"message": message}
                                 notify_mobile_application(
                                     topic_uuid, message, slam_data
