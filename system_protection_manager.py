@@ -97,6 +97,16 @@ def on_message(ws, message):
                         except Exception as e:
                             print(e)
 
+            if topic_name == "SIFIS:NETSPOT_alarms":
+                if "value" in json_message:
+                    notification = "Network Anomaly Detected !"
+                    notification_data = {
+                        "message": notification,
+                    }
+                    notify_mobile_application(
+                        topic_uuid, notification, notification_data
+                    )
+
             if topic_name == "SIFIS:Privacy_Aware_Speech_Recognition_Results":
                 if "value" in json_message:
                     json_message = json_message["value"]
