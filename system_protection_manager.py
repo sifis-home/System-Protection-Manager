@@ -12,7 +12,7 @@ table = {
     "146.48.99.65": "f198e31671aa7c23318359ad3df4d13bf4e13e7f8243794877598cbb2c953421",
 }
 
-notification_url_wisam = "http://146.48.99.25:3000/"
+notification_url_wisam = "http://localhost:3000/"
 
 
 def notify_mobile_application(topic_uuid, notification, notification_data):
