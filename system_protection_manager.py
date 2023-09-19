@@ -12,7 +12,7 @@ table = {
     "146.48.99.65": "f198e31671aa7c23318359ad3df4d13bf4e13e7f8243794877598cbb2c953421",
 }
 
-notification_url_wisam = "http://150.146.113.91:3000/"
+notification_url_wisam = "http://localhost:3000/"
 
 
 def notify_mobile_application(topic_uuid, notification, notification_data):
@@ -98,14 +98,14 @@ def on_message(ws, message):
                             print(e)
 
             if topic_name == "SIFIS:NETSPOT_alarms":
-                if "value" in json_message:
-                    notification = "Network Anomaly Detected !"
-                    notification_data = {
-                        "message": notification,
-                    }
-                    notify_mobile_application(
-                        topic_uuid, notification, notification_data
-                    )
+                notification = "Network Anomaly Detected !"
+                print("[! ! !] Sending Notification ")
+                notification_data = {
+                    "message": notification,
+                }
+                notify_mobile_application(
+                    topic_uuid, notification, notification_data
+                )
 
             if topic_name == "SIFIS:Privacy_Aware_Speech_Recognition_Results":
                 if "value" in json_message:
@@ -145,7 +145,8 @@ def on_message(ws, message):
                     # requestor_id = json_message["requestor_id"]
                     # request_id = json_message["request_id"]
                     # print(description)
-                    ip = json_message["subject_ip"]
+                    details = json_message["details"]
+                    ip = details["addr"]
 
                     if last_ip != ip or last_ip == None:
                         print(json_message)
