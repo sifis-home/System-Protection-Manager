@@ -152,7 +152,7 @@ def on_message(ws, message):
                     ]
                     print(details)
 
-                    ip = details["addr"]
+                    ip = details
 
                     if last_ip != ip or last_ip == None:
                         print(json_message)
