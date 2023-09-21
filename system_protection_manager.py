@@ -8,8 +8,8 @@ rest_url = "http://localhost:3000/"
 last_ip = None
 
 table = {
-    "146.48.99.25": "72b880d0fdc9a9a00dde4180727e908feb60e07bd614db710f606ca02f209153",
-    "146.48.99.65": "f198e31671aa7c23318359ad3df4d13bf4e13e7f8243794877598cbb2c953421",
+    "192.168.20.1": "72b880d0fdc9a9a00dde4180727e908feb60e07bd614db710f606ca02f209153",
+    "192.168.20.2": "f198e31671aa7c23318359ad3df4d13bf4e13e7f8243794877598cbb2c953421",
 }
 
 notification_url_wisam = "http://146.48.99.25:3000/"
@@ -145,7 +145,7 @@ def on_message(ws, message):
                     # requestor_id = json_message["requestor_id"]
                     # request_id = json_message["request_id"]
                     # print(description)
-                    details = json_message["details"]
+                    details = json_message["anomaly"]["details"]
                     ip = details["addr"]
 
                     if last_ip != ip or last_ip == None:
