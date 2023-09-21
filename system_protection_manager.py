@@ -246,7 +246,18 @@ def on_message(ws, message):
                         "Requestor": requestor,
                         "Request": request,
                     }
+                    notification = "Temperature Anomaly Detected"
+                    notification_data = {
+                        "anomaly": anomaly,
+                        "category": category,
+                        "message": notification,
+                    }
+                    notify_mobile_application(
+                        topic_uuid, notification, notification_data
+                    )
+
                     print("ANOMALY_DATA: " + str(anomaly_data))
+
                     """
                     url = "http://localhost:7000/manager"
                     response = requests.post(url, json=anomaly_data)
