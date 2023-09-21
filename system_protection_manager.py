@@ -235,32 +235,33 @@ def on_message(ws, message):
             ):
                 print("[!!!] Results have arrived ...\n")
                 anomaly = json_message["value"]["anomaly"]
-                requestor = json_message["value"]["requestor_id"]
-                request = json_message["value"]["request_id"]
-                with open("PROTECTION_MANAGER_LOG", "a") as f:
-                    f.write("\n\nReceived: " + str(json_message))
-                    f.write("ANOMALY: " + str(anomaly))
-                    f.write("REQUESTOR: " + str(requestor))
-                    anomaly_data = {
-                        "Anomaly": anomaly,
-                        "Requestor": requestor,
-                        "Request": request,
-                    }
-                    notification = "Temperature Anomaly Detected"
-                    notification_data = {
-                        "anomaly": anomaly,
-                        "message": notification,
-                    }
-                    notify_mobile_application(
-                        topic_uuid, notification, notification_data
-                    )
+                if anomaly == True:
+                    requestor = json_message["value"]["requestor_id"]
+                    request = json_message["value"]["request_id"]
+                    with open("PROTECTION_MANAGER_LOG", "a") as f:
+                        f.write("\n\nReceived: " + str(json_message))
+                        f.write("ANOMALY: " + str(anomaly))
+                        f.write("REQUESTOR: " + str(requestor))
+                        anomaly_data = {
+                            "Anomaly": anomaly,
+                            "Requestor": requestor,
+                            "Request": request,
+                        }
+                        notification = "Temperature Anomaly Detected"
+                        notification_data = {
+                            "anomaly": anomaly,
+                            "message": notification,
+                        }
+                        notify_mobile_application(
+                            topic_uuid, notification, notification_data
+                        )
 
-                    print("ANOMALY_DATA: " + str(anomaly_data))
+                        print("ANOMALY_DATA: " + str(anomaly_data))
 
-                    """
-                    url = "http://localhost:7000/manager"
-                    response = requests.post(url, json=anomaly_data)
-                    """
+                        """
+                        url = "http://localhost:7000/manager"
+                        response = requests.post(url, json=anomaly_data)
+                        """
         except Exception as e:
             print("[!!!] ERROR: " + str(e))
 
