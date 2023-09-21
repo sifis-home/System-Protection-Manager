@@ -249,7 +249,6 @@ def on_message(ws, message):
                     notification = "Temperature Anomaly Detected"
                     notification_data = {
                         "anomaly": anomaly,
-                        "category": category,
                         "message": notification,
                     }
                     notify_mobile_application(
