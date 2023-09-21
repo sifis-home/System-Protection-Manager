@@ -285,7 +285,7 @@ def connect_to_node_manager(node_id):
 
 def publish_dht_data(dht_data):
     ws = websocket.WebSocketApp(
-        "ws://localhost:3000/ws",
+        "ws://146.48.62.97:3000/ws",
         on_open=on_open,
         on_message=on_message,
         on_error=on_error,
