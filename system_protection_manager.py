@@ -147,7 +147,9 @@ def on_message(ws, message):
                     print(json_message)
                     anomaly_step = json_message["anomaly"]
                     print(anomaly_step)
-                    details = anomaly_step["details"]
+                    details = anomaly_step.split("'addr':", 1)[1].split(", ")[
+                        0
+                    ]
                     print(details)
 
                     ip = details["addr"]
