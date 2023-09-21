@@ -235,7 +235,7 @@ def on_message(ws, message):
             ):
                 print("[!!!] Results have arrived ...\n")
                 anomaly = json_message["value"]["anomaly"]
-                if anomaly == True:
+                if anomaly == "True":
                     requestor = json_message["value"]["requestor_id"]
                     request = json_message["value"]["request_id"]
                     with open("PROTECTION_MANAGER_LOG", "a") as f:
