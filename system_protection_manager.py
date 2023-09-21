@@ -144,8 +144,12 @@ def on_message(ws, message):
                     description = json_message["description"]
                     # requestor_id = json_message["requestor_id"]
                     # request_id = json_message["request_id"]
-                    # print(description)
-                    details = json_message["anomaly"]["details"]
+                    print(json_message)
+                    anomaly_step = json_message["anomaly"]
+                    print(anomaly_step)
+                    details = anomaly_step["details"]
+                    print(details)
+
                     ip = details["addr"]
 
                     if last_ip != ip or last_ip == None:
