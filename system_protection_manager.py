@@ -33,7 +33,6 @@ def on_message(ws, message):
     global last_ip
     json_message = json.loads(message)
     print(json_message)
-
     if "Persistent" in json_message:
         json_message = json_message["Persistent"]
 
@@ -359,6 +358,8 @@ def on_close(ws, close_status_code, close_msg):
 
 def on_open(ws):
     print("### Connection established ###")
+    print("ciao Chiara")
+
 
 
 if __name__ == "__main__":
