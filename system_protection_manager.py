@@ -358,7 +358,6 @@ def on_close(ws, close_status_code, close_msg):
 
 def on_open(ws):
     print("### Connection established ###")
-    print("ciao Chiara")
 
 
 
